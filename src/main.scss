@@ -1,0 +1,174 @@
+@mixin print {
+    @media print {
+        & {
+            @content;
+        }
+    }
+}
+
+body, html {
+    width: 100%;
+    min-height: 100vh;
+    padding: 0;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 10pt;
+    color: #333;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-print-color-adjust:exact !important;
+    print-color-adjust:exact !important;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+h1 {
+    font-size: 2em;
+    font-weight: 700;
+}
+
+p {
+    width: 100%;
+}
+
+#root {
+    --gutter: 2mm;
+
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    padding: 2cm;
+    gap: 2cm;
+
+    @include print {
+        padding: 0;
+        gap: 0;
+    }
+}
+
+.page {
+    position: relative;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    box-sizing: border-box;
+    height: 297mm;
+    width: 210mm;
+    flex-shrink: 0;
+    flex-grow: 0;
+    padding: 10mm;
+    gap: 0mm;
+    z-index: auto;
+    box-shadow: rgba(17, 17, 26, 0.1) 0pt 6pt 16pt, rgba(17, 17, 26, 0.1) 0pt 12pt 36pt, rgba(17, 17, 26, 0.1) 0pt 16pt 54pt;
+    
+    @include print {
+        padding: 0;
+        gap: 0;
+        box-shadow: none;
+        page-break-before: always;
+    }
+}
+
+.card {
+    width: 3.5in;
+    height: 2in;
+    padding: 0.5in;
+    display: inline-flex;
+    flex-flow: column nowrap;
+    gap: 6pt;
+
+    position: relative;
+    &::before {
+        content: '';
+        position: absolute;
+        bottom: 100%;
+        right: 100%;
+        width: var(--gutter);
+        height: var(--gutter);
+        background-color: cyan;
+        z-index: 1;
+    }
+    &::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 100%;
+        width: var(--gutter);
+        height: var(--gutter);
+        background-color: yellow;
+        z-index: 1;
+    }
+
+    &--gutter {
+        padding: var(--gutter);
+        position: relative;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: var(--gutter);
+            height: var(--gutter);
+            background-color: magenta;
+            z-index: 1;
+        }
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: var(--gutter);
+            height: var(--gutter);
+            background-color: black;
+            z-index: 1;
+        }
+    }
+
+    &--cover {
+        align-items: center;
+        justify-content: center;
+
+        h1, h2, h3, h4, h5, h6 {
+            margin: 0;
+            padding: 0;
+            font-weight: 400;
+            text-align: center;
+        }
+
+        hr {
+            width: 100%;
+            border-color: currentColor;
+            border-width: 1mm;
+            border-style: double;
+        }
+
+        p {
+            width: auto;
+            margin: 0;
+        }
+    }
+
+    &--number {
+        position: absolute;
+        bottom: 5mm;
+        right: 5mm;
+        font-size: 1.5em;
+        font-weight: 700;
+        color: #333;
+        z-index: 1;
+    }
+}
+
+.print-none {
+    @include print {
+        display: none;
+    }
+}
